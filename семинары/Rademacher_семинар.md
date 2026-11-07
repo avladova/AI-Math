@@ -30,14 +30,17 @@ $$R \leq \hat{R}_m + O\!\left(\sqrt{\frac{h\ln(m/h)}{m}}\right)$$
 ## 3. Формула эмпирической сложности Рэдемахера
 
 **Определение.** Для класса функций $F$ на выборке $S = (x_1, \ldots, x_m)$:
+
 $$
-\widehat{\mathfrak{R}}_S(F)
+\hat{\mathfrak{R}}_S(F)
 =
-\mathbb{E}_{\sigma}\!\left[
+\mathbb{E}_{\sigma}
+\left[
 \sup_{f \in F}
 \frac{1}{m}\sum_{i=1}^{m}\sigma_i f(x_i)
-\right].
+\right]
 $$
+
 где $\sigma_i$ — независимые случайные величины с $\mathbb{P}(\sigma_i = +1) = \mathbb{P}(\sigma_i = -1) = \tfrac{1}{2}$ (радемахеровские). Полное обозначение сложности — $\hat{\mathfrak{R}}_S(F)$; далее в вычислениях допускается сокращение $\hat{\mathfrak{R}}$, если выборка $S$ и класс $F$ понятны из контекста.
 
 Пояснения к обозначениям в формуле:
@@ -115,65 +118,87 @@ $$R(f) \;\leq\; \hat{R}_m(f) \;+\; 2\hat{\mathfrak{R}}_S(F) \;+\; 2M\sqrt{\frac{
 ## 6. Упрощённая оценка для линейных моделей
 
 Для линейного класса $F = \{x \mapsto w^\top x : \|w\|_2 \leq B\}$ с $\|x_i\|_2 \leq R$ для всех $i$:
+
 $$
-\widehat{\mathfrak{R}}_S(F)
-\leq
-\frac{BR}{\sqrt{m}}.
+\hat{\mathfrak{R}}_S(F) \leq \frac{BR}{\sqrt{m}}
 $$
 
+
 **Граница обобщения:**
+
 $$
 R(f)
 \leq
-\widehat{R}_m(f)
-+ \frac{2BR}{\sqrt{m}}
-+ 2M\sqrt{\frac{\ln(2/\delta)}{2m}}.
+\hat{R}_m(f)
++
+\frac{2BR}{\sqrt{m}}
++
+2M\sqrt{\frac{\ln(2/\delta)}{2m}}
 $$
+
 
 ### Доказательство
 
 Точная формула для линейного класса:
+
 $$
-\widehat{\mathfrak{R}}_S(F)
+\hat{\mathfrak{R}}_S(F)
 =
-\frac{B}{m}\,
-\mathbb{E}_\sigma\!\left[
-\left\|\sum_{i=1}^{m}\sigma_i x_i\right\|_2
-\right].
+\frac{B}{m}
+\mathbb{E}_\sigma
+\left\|
+\sum_{i=1}^{m}\sigma_i x_i
+\right\|_2
 $$
 
+
 Применяя неравенство Йенсена и $\mathbb{E}[\sigma_i\sigma_j] = \delta_{ij}$:
+
 $$
-\begin{aligned}
-\mathbb{E}_\sigma\!\left[
-\left\|\sum_{i=1}^{m}\sigma_i x_i\right\|_2
-\right]
-&\leq
+\mathbb{E}_\sigma
+\left\|
+\sum_{i=1}^{m}\sigma_i x_i
+\right\|_2
+\leq
 \sqrt{
-\mathbb{E}_\sigma\!\left[
-\left\|\sum_{i=1}^{m}\sigma_i x_i\right\|_2^2
-\right]} \\
-&=
+\mathbb{E}_\sigma
+\left\|
+\sum_{i=1}^{m}\sigma_i x_i
+\right\|_2^2
+}
+$$
+
+
+
+$$
 \sqrt{\sum_{i=1}^{m}\|x_i\|_2^2}
 \leq
 \sqrt{mR^2}
-= R\sqrt{m}.
-\end{aligned}
+=
+R\sqrt{m}
 $$
+
 
 Супремум по $w$ с $\|w\|_2 \leq B$ даёт множитель $B$. Итого: $BR/\sqrt{m}$. $\square$
 
 ### Что такое $\|w\|$ и $\|x_i\|$
 
 Для линейного классификатора $f(x) = w^\top x$ веса — это **вектор** $w = (w_1, \ldots, w_d)$, по одному весу на признак. Используется евклидова норма:
+
 $$
-\begin{aligned}
 \|w\|_2
-&= \sqrt{w_1^2 + w_2^2 + \cdots + w_d^2}, \\
-\|x_i\|_2
-&= \sqrt{x_{i,1}^2 + x_{i,2}^2 + \cdots + x_{i,d}^2}.
-\end{aligned}
+=
+\sqrt{w_1^2 + w_2^2 + \cdots + w_d^2}
 $$
+
+
+
+$$
+\|x_i\|_2
+=
+\sqrt{x_{i,1}^2 + x_{i,2}^2 + \cdots + x_{i,d}^2}
+$$
+
 
 **Условие $\|w\|_2 \leq B$ НЕ означает «каждый вес $\leq B$».** Это ограничение на общую длину вектора весов. Например, при $B = 1$:
 - $w = (1, 0, 0, 0)$ → $\|w\| = 1$ ✓
