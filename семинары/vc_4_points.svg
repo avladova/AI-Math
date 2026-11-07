@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="460" viewBox="0 0 760 460">
+  <rect width="760" height="460" fill="white"/>
+  <text x="380" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#1f2937">4 точки: чередующаяся разметка неразделима</text>
+  <polygon points="180,120 580,120 580,350 180,350" fill="#f8fafc" stroke="#64748b" stroke-width="3"/>
+  <circle cx="180" cy="120" r="12" fill="#dc2626"/><circle cx="580" cy="350" r="12" fill="#dc2626"/>
+  <circle cx="580" cy="120" r="12" fill="#2563eb"/><circle cx="180" cy="350" r="12" fill="#2563eb"/>
+  <text x="150" y="105" font-family="Arial" font-size="22" fill="#dc2626">+</text>
+  <text x="600" y="105" font-family="Arial" font-size="22" fill="#2563eb">−</text>
+  <text x="600" y="375" font-family="Arial" font-size="22" fill="#dc2626">+</text>
+  <text x="150" y="375" font-family="Arial" font-size="22" fill="#2563eb">−</text>
+  <line x1="120" y1="210" x2="640" y2="270" stroke="#16a34a" stroke-width="5" stroke-dasharray="12 8"/>
+  <line x1="120" y1="270" x2="640" y2="210" stroke="#16a34a" stroke-width="5" stroke-dasharray="12 8"/>
+  <text x="380" y="405" text-anchor="middle" font-family="Arial" font-size="18" fill="#374151">Любая прямая оставляет соседние точки разных классов по одну сторону</text>
+  <text x="380" y="432" text-anchor="middle" font-family="Arial" font-size="18" fill="#374151">→ чередующуюся разметку нельзя реализовать</text>
+</svg>
