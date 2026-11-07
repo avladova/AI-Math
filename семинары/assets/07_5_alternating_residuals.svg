@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="430" viewBox="0 0 820 430">
+<rect width="820" height="430" fill="white"/>
+<text x="410" y="28" text-anchor="middle" font-family="Arial" font-size="21" font-weight="bold">Задание 7.5: чередующиеся остатки</text>
+<line x1="70" y1="170" x2="750" y2="170" stroke="#6b7280" stroke-width="2"/>
+<polyline points="100,80 220,260 340,80 460,260 580,80 700,260" fill="none" stroke="#dc2626" stroke-width="4"/>
+<g fill="#dc2626"><circle cx="100" cy="80" r="8"/><circle cx="220" cy="260" r="8"/><circle cx="340" cy="80" r="8"/><circle cx="460" cy="260" r="8"/><circle cx="580" cy="80" r="8"/><circle cx="700" cy="260" r="8"/></g>
+<text x="410" y="320" text-anchor="middle" font-family="Arial" font-size="18" fill="#374151">e = (3, −3, 3, −3, 3, −3)</text>
+<text x="410" y="355" text-anchor="middle" font-family="Arial" font-size="17" fill="#374151">лаг 1: знаки противоположны → отрицательная ACF</text>
+<text x="410" y="385" text-anchor="middle" font-family="Arial" font-size="17" fill="#374151">лаг 2: знаки совпадают → положительная ACF</text>
+<g font-family="Arial" font-size="14" fill="#374151"><text x="42" y="85">+3</text><text x="42" y="175">0</text><text x="35" y="265">−3</text><text x="410" y="205" text-anchor="middle">вертикальная ось: остаток eₜ, шкала −3 … +3</text><text x="100" y="285">t=1</text><text x="700" y="285" text-anchor="end">t=6</text><text x="410" y="410" text-anchor="middle">горизонтальная ось: время t; соседние точки имеют лаг 1</text></g>
+</svg>

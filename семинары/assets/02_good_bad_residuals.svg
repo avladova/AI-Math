@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430">
+<rect width="900" height="430" fill="white"/>
+<text x="450" y="28" text-anchor="middle" font-family="Arial" font-size="21" font-weight="bold">Какими могут быть остатки</text>
+<line x1="450" y1="55" x2="450" y2="390" stroke="#d1d5db" stroke-width="2"/>
+<text x="225" y="62" text-anchor="middle" font-family="Arial" font-size="19" font-weight="bold" fill="#16a34a">Похоже на случайный шум</text>
+<text x="675" y="62" text-anchor="middle" font-family="Arial" font-size="19" font-weight="bold" fill="#dc2626">Осталась структура</text>
+<line x1="70" y1="220" x2="380" y2="220" stroke="#6b7280"/><line x1="520" y1="220" x2="830" y2="220" stroke="#6b7280"/>
+<g fill="#16a34a"><circle cx="90" cy="180" r="5"/><circle cx="120" cy="250" r="5"/><circle cx="155" cy="205" r="5"/><circle cx="190" cy="270" r="5"/><circle cx="225" cy="165" r="5"/><circle cx="260" cy="235" r="5"/><circle cx="300" cy="195" r="5"/><circle cx="340" cy="245" r="5"/><circle cx="370" cy="175" r="5"/></g>
+<polyline points="535,270 570,250 605,220 640,190 675,160 710,130 745,105 790,80" fill="none" stroke="#dc2626" stroke-width="4"/>
+<text x="225" y="350" text-anchor="middle" font-family="Arial" font-size="16" fill="#374151">нет очевидного рисунка</text>
+<text x="675" y="350" text-anchor="middle" font-family="Arial" font-size="16" fill="#374151">например, пропущен тренд</text>
+<g font-family="Arial" font-size="14" fill="#374151"><text x="225" y="385" text-anchor="middle">ось x: время t = 1 … 9; ось y: eₜ от −1 до +1</text><text x="675" y="385" text-anchor="middle">ось x: время t = 1 … 8; ось y: eₜ от −1 до +1</text><text x="58" y="225">0</text><text x="510" y="225">0</text><text x="225" y="210">шкала eₜ: −1 … +1</text><text x="675" y="210">шкала eₜ: −1 … +1</text></g>
+</svg>

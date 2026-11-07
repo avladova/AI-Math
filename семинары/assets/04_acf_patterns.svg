@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+<rect width="900" height="500" fill="white"/>
+<text x="450" y="28" text-anchor="middle" font-family="Arial" font-size="21" font-weight="bold">Как выглядит автокорреляция</text>
+<g font-family="Arial" font-size="16" fill="#374151"><text x="150" y="65" text-anchor="middle" font-weight="bold">Плавное затухание</text><text x="450" y="65" text-anchor="middle" font-weight="bold">Сезонные пики</text><text x="750" y="65" text-anchor="middle" font-weight="bold">Чередование знака</text></g>
+<g stroke="#9ca3af"><line x1="40" y1="250" x2="260" y2="250"/><line x1="340" y1="250" x2="560" y2="250"/><line x1="640" y1="250" x2="860" y2="250"/></g>
+<g stroke="#2563eb" stroke-width="7"><line x1="60" y1="250" x2="60" y2="110"/><line x1="90" y1="250" x2="90" y2="145"/><line x1="120" y1="250" x2="120" y2="175"/><line x1="150" y1="250" x2="150" y2="200"/><line x1="180" y1="250" x2="180" y2="220"/><line x1="210" y1="250" x2="210" y2="235"/></g>
+<g stroke="#7c3aed" stroke-width="7"><line x1="360" y1="250" x2="360" y2="130"/><line x1="390" y1="250" x2="390" y2="225"/><line x1="420" y1="250" x2="420" y2="220"/><line x1="450" y1="250" x2="450" y2="120"/><line x1="480" y1="250" x2="480" y2="225"/><line x1="510" y1="250" x2="510" y2="215"/><line x1="540" y1="250" x2="540" y2="125"/></g>
+<g stroke="#dc2626" stroke-width="7"><line x1="660" y1="250" x2="660" y2="125"/><line x1="690" y1="250" x2="690" y2="350"/><line x1="720" y1="250" x2="720" y2="145"/><line x1="750" y1="250" x2="750" y2="335"/><line x1="780" y1="250" x2="780" y2="165"/><line x1="810" y1="250" x2="810" y2="320"/></g>
+<text x="450" y="430" text-anchor="middle" font-family="Arial" font-size="16" fill="#374151">пики показывают лаги, на которых остатки связаны между собой</text>
+<g font-family="Arial" font-size="14" fill="#374151"><text x="150" y="285" text-anchor="middle">лаг k: 1 … 6; ρ̂(k): 0 … 1</text><text x="450" y="285" text-anchor="middle">лаг k: 1 … 7; ρ̂(k): 0 … 1</text><text x="750" y="285" text-anchor="middle">лаг k: 1 … 6; ρ̂(k): −1 … +1</text><text x="22" y="250" transform="rotate(-90 22 250)">ρ̂(k)</text><text x="450" y="475" text-anchor="middle">горизонтальная ось: лаг k; вертикальная ось: автокорреляция ρ̂(k)</text></g>
+</svg>

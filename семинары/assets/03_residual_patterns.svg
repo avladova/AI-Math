@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="560" viewBox="0 0 900 560">
+<rect width="900" height="560" fill="white"/>
+<text x="450" y="28" text-anchor="middle" font-family="Arial" font-size="21" font-weight="bold">Типичные рисунки на графике остатков</text>
+<g font-family="Arial" font-size="16" fill="#374151">
+<text x="225" y="70" text-anchor="middle" font-weight="bold">Тренд</text><text x="675" y="70" text-anchor="middle" font-weight="bold">Сезонность</text><text x="225" y="325" text-anchor="middle" font-weight="bold">Меняющийся разброс</text><text x="675" y="325" text-anchor="middle" font-weight="bold">Случайное облако</text>
+</g>
+<g stroke="#9ca3af"><line x1="55" y1="190" x2="395" y2="190"/><line x1="505" y1="190" x2="845" y2="190"/><line x1="55" y1="445" x2="395" y2="445"/><line x1="505" y1="445" x2="845" y2="445"/></g>
+<polyline points="70,175 110,165 150,150 190,140 230,120 270,105 310,90 360,75" fill="none" stroke="#dc2626" stroke-width="4"/>
+<polyline points="520,180 545,130 570,180 595,130 620,180 645,130 670,180 695,130 720,180 745,130 770,180 810,130" fill="none" stroke="#7c3aed" stroke-width="4"/>
+<path d="M70 430 Q120 390 170 410 Q220 360 270 380 Q320 300 370 320" fill="none" stroke="#ea580c" stroke-width="4"/>
+<g fill="#2563eb"><circle cx="520" cy="430" r="5"/><circle cx="555" cy="400" r="5"/><circle cx="585" cy="460" r="5"/><circle cx="615" cy="420" r="5"/><circle cx="650" cy="475" r="5"/><circle cx="680" cy="390" r="5"/><circle cx="715" cy="440" r="5"/><circle cx="750" cy="410" r="5"/><circle cx="800" cy="465" r="5"/></g>
+<g font-family="Arial" font-size="13" fill="#374151"><text x="225" y="205" text-anchor="middle">t = 1 … 8; eₜ: −1 … +1</text><text x="675" y="205" text-anchor="middle">t = 1 … 12; eₜ: −1 … +1</text><text x="225" y="460" text-anchor="middle">t = 1 … 8; eₜ: −3 … +3</text><text x="675" y="460" text-anchor="middle">t = 1 … 9; eₜ: −1 … +1</text><text x="20" y="190" transform="rotate(-90 20 190)">остаток eₜ</text><text x="20" y="445" transform="rotate(-90 20 445)">остаток eₜ</text></g>
+</svg>
