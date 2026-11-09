@@ -152,7 +152,9 @@ $$m \;\geq\; \frac{h \ln(2em/h) + \ln(4/\delta)}{2\varepsilon^2}.$$
 ## 5. Вероятностная граница VC
 
 В формуле:
-$$R(f) \;\leq\; \hat{R}_m(f) \;+\; \sqrt{\frac{1}{2m}\!\left(h \ln\frac{2em}{h} + \ln\frac{4}{\delta}\right)}, \qquad \text{с вероятностью} \geq 1 - \delta.$$
+$$
+R(f) \le \hat{R}_m(f) + \sqrt{\frac{1}{2m} \left(h \ln\frac{2em}{h} + \ln\frac{4}{\delta}\right)}, \quad \text{с вероятностью} \ge 1 - \delta.
+$$
 
 Здесь:
 - $\delta \in (0, 1)$ — допустимая вероятность нарушения оценки.
