@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-Math — интерактивные семинары</title>
+  <style>
+    :root { color-scheme: light; --ink:#17212b; --muted:#68716f; --paper:#f4eedc; --red:#b4472f; --line:#c9bea5; --white:#fffdf7; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:17px/1.55 Georgia, serif; }
+    main { width:min(960px, 90vw); margin:0 auto; padding:72px 0 90px; }
+    .eyebrow { color:var(--red); font:11px/1.2 monospace; letter-spacing:.12em; text-transform:uppercase; }
+    h1 { max-width:680px; font-size:clamp(42px, 7vw, 76px); line-height:.95; letter-spacing:-.06em; margin:22px 0; }
+    h1 em { color:var(--red); font-style:normal; }
+    .lead { max-width:620px; color:var(--muted); font-size:20px; }
+    .rule { border:0; border-top:1px solid var(--line); margin:55px 0 24px; }
+    .section-label { color:var(--muted); font:11px monospace; text-transform:uppercase; letter-spacing:.1em; }
+    .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-top:20px; }
+    a.card { display:block; min-height:190px; padding:24px; color:var(--white); text-decoration:none; background:var(--ink); border:1px solid var(--ink); box-shadow:8px 8px 0 rgba(27,77,137,.12); transition:transform .15s, box-shadow .15s; }
+    a.card:hover { transform:translate(3px,3px); box-shadow:5px 5px 0 rgba(27,77,137,.12); }
+    a.card .no { color:#e58b6e; font:11px monospace; }
+    a.card h2 { margin:28px 0 8px; font-size:26px; line-height:1; letter-spacing:-.04em; }
+    a.card p { margin:0; color:#b7c0bd; font-size:14px; }
+    .source-links { margin-top:26px; padding-top:18px; border-top:1px solid var(--line); font-size:14px; }
+    .source-links a { color:var(--red); }
+    footer { margin-top:75px; color:var(--muted); font:11px monospace; text-transform:uppercase; letter-spacing:.06em; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="eyebrow">AI-Math / интерактивный слой курса</div>
+    <h1>Математика,<br><em>которую можно покрутить.</em></h1>
+    <p class="lead">Интерактивные страницы дополняют семинары: здесь можно менять параметры, наблюдать графики и проверять интуицию прямо в браузере.</p>
+    <hr class="rule">
+    <div class="section-label">Семинары</div>
+    <div class="cards">
+      <a class="card" href="seminars/rademacher/">
+        <span class="no">01 / интерактивный материал</span>
+        <h2>Радиус Рэдемахера</h2>
+        <p>Калькулятор, верхняя граница ошибки и разбор влияния параметров.</p>
+      </a>
+      <div class="card" style="opacity:.62;box-shadow:none;">
+        <span class="no">02 / в разработке</span>
+        <h2>Диагностика остатков</h2>
+        <p>Интерактивный стенд по временным рядам, ACF и белому шуму.</p>
+      </div>
+    </div>
+    <div class="source-links">Теоретические материалы: <a href="https://github.com/avladova/AI-Math/tree/main/%D1%81%D0%B5%D0%BC%D0%B8%D0%BD%D0%B0%D1%80%D1%8B">семинары в репозитории</a>.</div>
+    <footer>AI-Math · интерактивные материалы для студентов</footer>
+  </main>
+</body>
+</html>

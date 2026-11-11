@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Радиус Рэдемахера — интерактивный материал</title>
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #000000;
+    --muted: #555555;
+    --soft: #f4f4f4;
+    --rule: #000000;
+    --accent: #0066cc;
+    --serif: 'Times New Roman', 'Times', 'Noto Serif', serif;
+    --sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg); color: var(--fg);
+    font-family: var(--serif);
+    font-size: 17px; line-height: 1.55;
+  }
+  body { padding: 0 0 60px 0; }
+
+  header {
+    border-bottom: 2px solid var(--rule);
+    padding: 28px 40px 16px 40px;
+    background: var(--bg);
+    position: sticky; top: 0; z-index: 10;
+  }
+  header h1 {
+    margin: 0 0 4px 0;
+    font-size: 30px; font-weight: 700;
+    font-family: var(--serif);
+  }
+  header .subtitle {
+    color: var(--muted);
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+  nav {
+    display: flex; gap: 4px;
+    border-top: 1px solid #ddd;
+    padding-top: 12px;
+  }
+  nav button {
+    background: transparent; border: 1px solid transparent;
+    padding: 8px 18px;
+    font-family: var(--serif); font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px 4px 0 0;
+    color: var(--muted);
+    transition: all 0.15s;
+  }
+  nav button:hover { background: var(--soft); color: var(--fg); }
+  nav button.active {
+    background: var(--fg); color: var(--bg);
+    border-color: var(--fg);
+  }
+
+  main { padding: 32px 40px; max-width: 1100px; margin: 0 auto; }
+  section { display: none; }
+  section.active { display: block; }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 24px; font-weight: 700;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 6px; margin: 0 0 18px 0;
+  }
+  h3 {
+    font-family: var(--serif);
+    font-size: 19px; font-weight: 700;
+    margin: 22px 0 10px 0;
+  }
+  p { margin: 0 0 12px 0; }
+  ul, ol { margin: 6px 0 14px 0; padding-left: 26px; }
+  li { margin-bottom: 5px; }
+
+  .formula-box {
+    border: 1.5px solid var(--fg);
+    padding: 14px 20px;
+    margin: 14px auto;
+    text-align: center;
+    background: var(--soft);
+    max-width: 90%;
+  }
+  .formula { text-align: center; margin: 12px 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 16px;
+  }
+  th, td {
+    border: 1px solid var(--fg);
+    padding: 7px 11px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: var(--soft); font-weight: 700; }
+  td.sym { font-family: var(--serif); white-space: nowrap; width: 25%; }
+
+  .callout {
+    border-left: 3px solid var(--fg);
+    padding: 8px 14px;
+    margin: 12px 0;
+    background: var(--soft);
+    font-style: italic;
+  }
+
+  /* Calculator */
+  .calc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 14px;
+  }
+  .calc-inputs, .calc-outputs {
+    border: 1px solid var(--fg);
+    padding: 16px 20px;
+  }
+  .calc-inputs h3, .calc-outputs h3 {
+    margin-top: 0; border-bottom: 1px solid var(--fg);
+    padding-bottom: 6px;
+  }
+  .input-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 70px;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .input-row label {
+    font-family: var(--serif); font-size: 16px;
+  }
+  .input-row input[type="range"] {
+    width: 100%;
+  }
+  .input-row input[type="number"] {
+    width: 70px;
+    padding: 4px 6px;
+    font-family: var(--mono); font-size: 14px;
+    border: 1px solid var(--fg);
+  }
+  .input-row .value {
+    font-family: var(--mono); font-size: 14px;
+    text-align: right;
+  }
+
+  .output-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px dotted #ccc;
+    font-size: 16px;
+  }
+  .output-row:last-child { border-bottom: none; }
+  .output-row .label { color: var(--muted); }
+  .output-row .value {
+    font-family: var(--mono); font-weight: 700;
+  }
+  .output-row.total {
+    border-top: 2px solid var(--fg);
+    border-bottom: none;
+    padding-top: 10px;
+    margin-top: 8px;
+    font-size: 18px;
+  }
+  .output-row.total .value { font-size: 20px; }
+
+  .bound-bar {
+    margin-top: 18px;
+    height: 40px;
+    display: flex;
+    border: 1px solid var(--fg);
+  }
+  .bound-bar > div {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-family: var(--mono);
+    color: var(--bg);
+    overflow: hidden;
+    transition: width 0.2s;
+  }
+  .bound-bar .train { background: #333; }
+  .bound-bar .rademacher { background: #666; }
+  .bound-bar .conf { background: #999; color: #000; }
+
+  .presets {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-top: 12px;
+  }
+  .presets button {
+    background: var(--soft); border: 1px solid var(--fg);
+    padding: 5px 10px; font-family: var(--serif); font-size: 14px;
+    cursor: pointer; border-radius: 3px;
+  }
+  .presets button:hover { background: var(--fg); color: var(--bg); }
+
+  /* Dynamic analysis */
+  .analysis {
+    border: 1.5px solid var(--fg);
+    padding: 18px 22px;
+    margin-top: 22px;
+    background: var(--soft);
+  }
+  .analysis h3 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--fg);
+    padding-bottom: 6px;
+  }
+  .status-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .status-badge {
+    padding: 6px 14px;
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    border-radius: 3px;
+  }
+  .status-good  { background: #2a7a2a; }
+  .status-ok    { background: #aa7700; }
+  .status-warn  { background: #cc4400; }
+  .status-bad   { background: #aa0000; }
+
+  .analysis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 14px;
+  }
+  .analysis-block {
+    border: 1px solid var(--fg);
+    padding: 10px 14px;
+    background: #fff;
+  }
+  .analysis-block h4 {
+    margin: 0 0 6px 0;
+    font-size: 15px;
+    font-family: var(--serif);
+    color: var(--muted);
+    font-weight: 700;
+  }
+  .analysis-block .big-num {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .analysis-block .sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .recommendations {
+    background: #fff;
+    border: 1px solid var(--fg);
+    padding: 12px 16px;
+  }
+  .recommendations h4 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    font-family: var(--serif);
+  }
+  .recommendations ul {
+    margin: 0;
+    padding-left: 22px;
+  }
+  .recommendations li {
+    margin-bottom: 6px;
+    font-size: 15px;
+  }
+  .recommendations .delta {
+    color: #2a7a2a;
+    font-weight: 700;
+  }
+  .recommendations .worse {
+    color: #aa0000;
+  }
+
+  /* Chart */
+  .chart-wrap {
+    border: 1px solid var(--fg);
+    padding: 16px;
+    margin-top: 14px;
+  }
+  #chartCanvas {
+    width: 100%; height: 460px;
+    display: block;
+    background: var(--bg);
+  }
+  .chart-controls {
+    display: flex; flex-wrap: wrap; gap: 16px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #ddd;
+  }
+  .chart-controls label {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 15px; cursor: pointer;
+  }
+  .chart-controls input[type="checkbox"] {
+    width: 16px; height: 16px; cursor: pointer;
+  }
+  .chart-controls .slider-control {
+    display: flex; align-items: center; gap: 8px;
+    border-left: 1px solid #ddd;
+    padding-left: 16px;
+  }
+  .chart-controls .slider-control input[type="range"] { width: 120px; }
+
+  /* Examples */
+  .example-nav {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    margin-bottom: 16px;
+  }
+  .example-nav button {
+    background: var(--soft); border: 1px solid #ddd;
+    padding: 6px 12px; font-family: var(--serif); font-size: 14px;
+    cursor: pointer; border-radius: 3px;
+    color: var(--muted);
+  }
+  .example-nav button.active {
+    background: var(--fg); color: var(--bg);
+    border-color: var(--fg);
+  }
+  .example-card {
+    border: 1px solid var(--fg);
+    padding: 18px 24px;
+  }
+  .example-card .scenario { margin-bottom: 10px; }
+  .example-card .question {
+    font-style: italic;
+    border-left: 3px solid var(--fg);
+    padding-left: 12px;
+    margin: 10px 0;
+  }
+  .example-card .calc { margin: 10px 0; }
+  .example-card .answer {
+    background: var(--soft);
+    padding: 8px 14px;
+    margin-top: 10px;
+    border-left: 3px solid var(--fg);
+  }
+  .example-card .load-btn {
+    margin-top: 12px;
+    background: var(--fg); color: var(--bg);
+    border: none; padding: 8px 16px;
+    font-family: var(--serif); font-size: 14px;
+    cursor: pointer; border-radius: 3px;
+  }
+  .example-card .load-btn:hover { opacity: 0.85; }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+    margin-top: 40px;
+  }
+
+  mjx-container { font-size: 110% !important; }
+
+  @media (max-width: 800px) {
+    .calc-grid { grid-template-columns: 1fr; }
+    main { padding: 20px; }
+    header { padding: 20px; }
+    nav button { padding: 6px 12px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Радиус Рэдемахера как мера сложности класса функций</h1>
+  <div class="subtitle">Тема 4 • Семинар 2 • Интерактивный материал</div>
+  <nav>
+    <button data-tab="theory" class="active">Теория</button>
+    <button data-tab="calculator">Калькулятор</button>
+    <button data-tab="chart">График</button>
+    <button data-tab="examples">Примеры</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ============ ТЕОРИЯ ============ -->
+<section id="theory" class="active">
+  <h2>Теория</h2>
+
+  <h3>Постановка задачи</h3>
+  <p>Пусть $F$ — класс функций, $S = (x_1, \ldots, x_m)$ — обучающая выборка. <strong>Истинный риск</strong> $R(f) = \mathbb{E}\,\ell(f(x), y)$, <strong>эмпирический риск</strong> $\hat{R}_m(f) = \frac{1}{m}\sum_i \ell(f(x_i), y_i)$. Задача — оценить $\sup_{f \in F}|R(f) - \hat{R}_m(f)|$.</p>
+
+  <p>VC-оценка $O(\sqrt{h\ln(m/h)/m})$ не использует данные. Рэдемахер вводит меру, зависящую от $S$.</p>
+
+  <h3>Эмпирическая сложность Рэдемахера</h3>
+  <div class="formula-box">
+    $$\hat{\mathfrak{R}}_S(F) = \mathbb{E}_{\sigma}\!\left[\sup_{f \in F}\;\frac{1}{m}\sum_{i=1}^{m}\sigma_i\,f(x_i)\right]$$
+  </div>
+  <p>где $\sigma_i \in \{-1, +1\}$ — независимые радемахеровские случайные величины.</p>
+
+  <table>
+    <tr><th>Символ</th><th>Что значит</th></tr>
+    <tr><td class="sym">$F$</td><td>Класс функций («ящик» со всеми моделями одной формы)</td></tr>
+    <tr><td class="sym">$f \in F$</td><td>Любая модель из класса — <strong>не обученная</strong>, а произвольная</td></tr>
+    <tr><td class="sym">$x_i$</td><td>$i$-я точка <strong>обучающей</strong> выборки (не тестовой!)</td></tr>
+    <tr><td class="sym">$\sigma_i$</td><td>Бросок монетки: $+1$ или $-1$ равновероятно</td></tr>
+    <tr><td class="sym">$\sigma_i \cdot f(x_i)$</td><td>Согласие модели и монетки: $+1$ если согласны, $-1$ если нет</td></tr>
+    <tr><td class="sym">$\sup_{f \in F}$</td><td>Выбираем лучшую модель из ящика по согласию с шумом</td></tr>
+    <tr><td class="sym">$\mathbb{E}_\sigma$</td><td>Усреднение по всем $2^m$ броскам монеток</td></tr>
+    <tr><td class="sym">$\hat{\mathfrak{R}}_S \in [0, 1]$</td><td>Действительное число — мера гибкости класса на выборке</td></tr>
+  </table>
+
+  <h3>Граница обобщения</h3>
+  <div class="formula-box">
+    $$R(f) \;\leq\; \hat{R}_m(f) \;+\; 2\hat{\mathfrak{R}}_S(F) \;+\; \sqrt{\frac{\ln(1/\delta)}{2m}} \quad \text{с вероятностью} \geq 1 - \delta$$
+  </div>
+  <ul>
+    <li><strong>$\hat{R}_m(f)$</strong> — ошибка на обучении</li>
+    <li><strong>$2\hat{\mathfrak{R}}_S(F)$</strong> — двойная сложность (зазор за гибкость модели)</li>
+    <li><strong>$\sqrt{\ln(1/\delta)/(2m)}$</strong> — статистический доверительный зазор</li>
+    <li><strong>$\delta$</strong> — вероятность того, что оценка НЕ выполняется</li>
+  </ul>
+
+  <h3>Упрощённая оценка для линейных моделей</h3>
+  <p>Для $f(x) = w^\top x$ с $\|w\|_2 \leq B$ и $\|x_i\|_2 \leq R$:</p>
+  <div class="formula-box">
+    $$\hat{\mathfrak{R}}_S(F) \leq \frac{B \cdot R}{\sqrt{m}}$$
+  </div>
+  <p><strong>Итоговая граница:</strong></p>
+  <div class="formula-box">
+    $$R(f) \;\leq\; \hat{R}_m(f) \;+\; \frac{2BR}{\sqrt{m}} \;+\; \sqrt{\frac{\ln(1/\delta)}{2m}}$$
+  </div>
+
+  <div class="callout">
+    <strong>Три рычага уменьшения сложности $\hat{\mathfrak{R}} = BR/\sqrt{m}$:</strong>
+    <ol style="margin: 6px 0 0 0;">
+      <li>Усиливаешь регуляризацию → $B \downarrow$ → $\hat{\mathfrak{R}} \downarrow$</li>
+      <li>Нормируешь признаки → $R \downarrow$ → $\hat{\mathfrak{R}} \downarrow$</li>
+      <li>Собираешь больше данных → $m \uparrow$ → $\hat{\mathfrak{R}} \downarrow$ как $1/\sqrt{m}$</li>
+    </ol>
+  </div>
+
+  <h3>Сравнение с VC</h3>
+  <table>
+    <tr><th>Свойство</th><th>VC</th><th>Рэдемахер</th></tr>
+    <tr><td>Мера сложности</td><td>$h$ (целое)</td><td>$\hat{\mathfrak{R}}_S \in \mathbb{R}_+$</td></tr>
+    <tr><td>Зависимость от данных</td><td>нет</td><td>да (через $S$)</td></tr>
+    <tr><td>Применимость</td><td>бинарная классификация</td><td>произвольные потери</td></tr>
+    <tr><td>Асимптотика зазора</td><td>$O(\sqrt{h\ln(m/h)/m})$</td><td>$O(\hat{\mathfrak{R}}_S + 1/\sqrt{m})$</td></tr>
+    <tr><td>Точность</td><td>консервативная</td><td>в 1,5–3 раза точнее</td></tr>
+  </table>
+</section>
+
+<!-- ============ КАЛЬКУЛЯТОР ============ -->
+<section id="calculator">
+  <h2>Калькулятор границы обобщения</h2>
+  <p>Вводите параметры линейной модели — получаете сложность Рэдемахера и верхнюю границу истинной ошибки. Формула:</p>
+  <div class="formula-box">
+    $$R \;\leq\; \hat{R}_m \;+\; \frac{2BR}{\sqrt{m}} \;+\; \sqrt{\frac{\ln(1/\delta)}{2m}}$$
+  </div>
+
+  <div class="calc-grid">
+    <div class="calc-inputs">
+      <h3>Параметры</h3>
+      <div class="input-row">
+        <label>$B$ (веса)</label>
+        <input type="range" id="B_slider" min="0.05" max="5" step="0.05" value="1">
+        <input type="number" id="B_num" min="0.05" max="5" step="0.05" value="1">
+      </div>
+      <div class="input-row">
+        <label>$R$ (признаки)</label>
+        <input type="range" id="R_slider" min="0.5" max="10" step="0.1" value="3">
+        <input type="number" id="R_num" min="0.5" max="10" step="0.1" value="3">
+      </div>
+      <div class="input-row">
+        <label>$m$ (выборка)</label>
+        <input type="range" id="m_slider" min="50" max="20000" step="50" value="1000">
+        <input type="number" id="m_num" min="50" max="20000" step="50" value="1000">
+      </div>
+      <div class="input-row">
+        <label>$\hat{R}_m$</label>
+        <input type="range" id="Rm_slider" min="0" max="0.5" step="0.01" value="0.05">
+        <input type="number" id="Rm_num" min="0" max="0.5" step="0.01" value="0.05">
+      </div>
+      <div class="input-row">
+        <label>$\delta$</label>
+        <input type="range" id="delta_slider" min="0.01" max="0.2" step="0.01" value="0.05">
+        <input type="number" id="delta_num" min="0.01" max="0.2" step="0.01" value="0.05">
+      </div>
+
+      <h3 style="margin-top: 18px;">Пресеты</h3>
+      <div class="presets">
+        <button data-preset="ex1">Пример 1: скоринг</button>
+        <button data-preset="ex5">Пример 5: VC vs Rad</button>
+        <button data-preset="ex6">Пример 6: акции</button>
+        <button data-preset="ex7">Пример 7: 50 признаков</button>
+        <button data-preset="ex9a">Пример 9: стартап</button>
+        <button data-preset="ex9b">Пример 9: крупный банк</button>
+        <button data-preset="reset">Сброс</button>
+      </div>
+    </div>
+
+    <div class="calc-outputs">
+      <h3>Результаты</h3>
+      <div class="output-row">
+        <span class="label">$\hat{\mathfrak{R}} = BR/\sqrt{m}$</span>
+        <span class="value" id="out_rad">—</span>
+      </div>
+      <div class="output-row">
+        <span class="label">$2\hat{\mathfrak{R}}$ (за гибкость)</span>
+        <span class="value" id="out_2rad">—</span>
+      </div>
+      <div class="output-row">
+        <span class="label">Доверит. зазор $\sqrt{\ln(1/\delta)/(2m)}$</span>
+        <span class="value" id="out_conf">—</span>
+      </div>
+      <div class="output-row">
+        <span class="label">Доверие $1 - \delta$</span>
+        <span class="value" id="out_trust">—</span>
+      </div>
+      <div class="output-row total">
+        <span class="label">$R \leq$</span>
+        <span class="value" id="out_bound">—</span>
+      </div>
+
+      <h3 style="margin-top: 18px;">Разбор границы</h3>
+      <div class="bound-bar" id="boundBar">
+        <div class="train" id="bar_train">$\hat{R}_m$</div>
+        <div class="rademacher" id="bar_rad">$2\hat{\mathfrak{R}}$</div>
+        <div class="conf" id="bar_conf">довер.</div>
+      </div>
+      <p style="font-size: 14px; color: var(--muted); margin-top: 8px;">
+        Тёмно-серая полоса — обучающая ошибка. Средняя — зазор за сложность модели. Светлая — статистический доверительный зазор.
+      </p>
+
+      <h3 style="margin-top: 18px;">Требуемое $m$ для $\varepsilon = 0{,}05$</h3>
+      <div class="output-row">
+        <span class="label">Минимальное $m$ (только $2\hat{\mathfrak{R}} \leq \varepsilon$)</span>
+        <span class="value" id="out_m_req">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic analysis block -->
+  <div class="analysis" id="analysisSection">
+    <h3>Динамический анализ</h3>
+    <div class="status-row">
+      <span class="status-badge" id="statusBadge">—</span>
+      <span id="statusText" style="font-size: 16px;"></span>
+    </div>
+
+    <div class="analysis-grid">
+      <div class="analysis-block">
+        <h4>Главный вклад в границу</h4>
+        <div class="big-num" id="mainContributor">—</div>
+        <div class="sub" id="mainContributorSub"></div>
+      </div>
+      <div class="analysis-block">
+        <h4>Сравнение с VC-границей</h4>
+        <div class="big-num" id="vcCompare">—</div>
+        <div class="sub" id="vcCompareSub"></div>
+      </div>
+      <div class="analysis-block">
+        <h4>Зазор обучения и реальности</h4>
+        <div class="big-num" id="gapValue">—</div>
+        <div class="sub" id="gapValueSub"></div>
+      </div>
+      <div class="analysis-block">
+        <h4>Доверие к оценке</h4>
+        <div class="big-num" id="trustLevel">—</div>
+        <div class="sub" id="trustLevelSub"></div>
+      </div>
+    </div>
+
+    <div class="recommendations" id="recommendations">
+      <h4>Рекомендации (что-if анализ)</h4>
+      <ul id="recList"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ГРАФИК ============ -->
+<section id="chart">
+  <h2>Зависимость ошибки от сложности модели</h2>
+  <p>Интерактивный график: обучение, истинная ошибка, верхняя граница и зазор. Меняйте $m$ — зазор будет сжиматься.</p>
+
+  <div class="chart-wrap">
+    <canvas id="chartCanvas" width="1000" height="460"></canvas>
+    <div class="chart-controls">
+      <label><input type="checkbox" id="ch_train" checked> $\hat{R}_m$ (обучение)</label>
+      <label><input type="checkbox" id="ch_true" checked> $R$ (истинная)</label>
+      <label><input type="checkbox" id="ch_bound" checked> Верхняя граница</label>
+      <label><input type="checkbox" id="ch_gap" checked> Зазор (заливка)</label>
+      <div class="slider-control">
+        <label>$m = $ <span id="m_display">500</span></label>
+        <input type="range" id="chart_m" min="100" max="5000" step="100" value="500">
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top: 16px;">
+    <strong>Как читать график.</strong> Сложность растёт → обучающая ошибка падает, но зазор между ней и верхней границей растёт. Истинная ошибка $R$ имеет U-образную форму: сначала падает (меньше bias), потом растёт (переобучение). <strong>Оптимум</strong> — там, где минимальна верхняя граница.
+  </div>
+</section>
+
+<!-- ============ ПРИМЕРЫ ============ -->
+<section id="examples">
+  <h2>Финансовые примеры</h2>
+  <p>10 задач с решениями. Кликайте по номеру — загружается карточка. Кнопка «В калькулятор» переносит параметры примера в калькулятор.</p>
+
+  <div class="example-nav" id="exNav"></div>
+  <div class="example-card" id="exCard"></div>
+</section>
+
+</main>
+
+<footer>
+  Тема 4 • Семинар 2 • Радиус Рэдемахера • Математика искусственного интеллекта
+</footer>
+
+<script>
+// ============ TAB NAVIGATION ============
+const tabs = document.querySelectorAll('nav button');
+const sections = document.querySelectorAll('section');
+tabs.forEach(btn => {
+  btn.addEventListener('click', () => {
+    tabs.forEach(b => b.classList.remove('active'));
+    sections.forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'chart') drawChart();
+  });
+});
+
+// ============ CALCULATOR ============
+const inputs = ['B', 'R', 'm', 'Rm', 'delta'];
+const state = { B: 1, R: 3, m: 1000, Rm: 0.05, delta: 0.05 };
+
+inputs.forEach(name => {
+  const slider = document.getElementById(name + '_slider');
+  const num = document.getElementById(name + '_num');
+  const sync = (val) => {
+    state[name] = parseFloat(val);
+    slider.value = val;
+    num.value = val;
+    updateCalc();
+  };
+  slider.addEventListener('input', e => sync(e.target.value));
+  num.addEventListener('input', e => sync(e.target.value));
+});
+
+function updateCalc() {
+  const { B, R, m, Rm, delta } = state;
+  const rad = B * R / Math.sqrt(m);
+  const twoRad = 2 * rad;
+  const conf = Math.sqrt(Math.log(1/delta) / (2 * m));
+  const bound = Rm + twoRad + conf;
+  const mReq = Math.pow(2 * B * R / 0.05, 2);
+
+  document.getElementById('out_rad').textContent = rad.toFixed(4);
+  document.getElementById('out_2rad').textContent = twoRad.toFixed(4);
+  document.getElementById('out_conf').textContent = conf.toFixed(4);
+  document.getElementById('out_trust').textContent = ((1 - delta) * 100).toFixed(0) + '%';
+  document.getElementById('out_bound').textContent = bound.toFixed(4);
+  document.getElementById('out_m_req').textContent = Math.round(mReq).toLocaleString('ru-RU');
+
+  // Bound bar
+  const total = bound;
+  const w1 = Math.max(2, (Rm / total) * 100);
+  const w2 = Math.max(2, (twoRad / total) * 100);
+  const w3 = Math.max(2, (conf / total) * 100);
+  document.getElementById('bar_train').style.width = w1 + '%';
+  document.getElementById('bar_rad').style.width = w2 + '%';
+  document.getElementById('bar_conf').style.width = w3 + '%';
+
+  // Dynamic analysis
+  generateAnalysis();
+
+  if (window.MathJax && MathJax.typesetPromise) {
+    MathJax.typesetPromise([document.getElementById('calculator')]);
+  }
+}
+
+function generateAnalysis() {
+  const { B, R, m, Rm, delta } = state;
+  const rad = B * R / Math.sqrt(m);
+  const twoRad = 2 * rad;
+  const conf = Math.sqrt(Math.log(1/delta) / (2 * m));
+  const bound = Rm + twoRad + conf;
+  const gap = bound - Rm;  // total gap between train and true error
+
+  // 1) Status badge
+  const badge = document.getElementById('statusBadge');
+  const statusText = document.getElementById('statusText');
+  let status, statusClass, statusLabel, statusDesc;
+  if (bound < 0.15) {
+    status = 'good'; statusClass = 'status-good';
+    statusLabel = 'ОТЛИЧНО';
+    statusDesc = `Граница ${bound.toFixed(3)} < 15% — модель надёжно обобщает, можно запускать в продакшн.`;
+  } else if (bound < 0.30) {
+    status = 'ok'; statusClass = 'status-ok';
+    statusLabel = 'ПРИЕМЛЕМО';
+    statusDesc = `Граница ${bound.toFixed(3)} в диапазоне 15–30% — приемлемая гарантия для большинства задач.`;
+  } else if (bound < 0.50) {
+    status = 'warn'; statusClass = 'status-warn';
+    statusLabel = 'СЛАБО';
+    statusDesc = `Граница ${bound.toFixed(3)} в диапазоне 30–50% — гарантия слабая, есть риск переобучения.`;
+  } else {
+    status = 'bad'; statusClass = 'status-bad';
+    statusLabel = 'КРИТИЧНО';
+    statusDesc = bound > 1
+      ? `Граница ${bound.toFixed(3)} > 1 — оценка бессмысленна (модель впитывает шум). Нормируй признаки и усиливай регуляризацию.`
+      : `Граница ${bound.toFixed(3)} ≥ 50% — модель не обобщает. Нужны: больше данных, сильнее регуляризация или нормировка.`;
+  }
+  badge.className = 'status-badge ' + statusClass;
+  badge.textContent = statusLabel;
+  statusText.textContent = statusDesc;
+
+  // 2) Main contributor
+  const contributors = [
+    { name: 'Обучающая ошибка $\\hat{R}_m$', value: Rm, pct: (Rm / bound * 100) },
+    { name: 'Сложность Рэдемахера $2\\hat{\\mathfrak{R}}$', value: twoRad, pct: (twoRad / bound * 100) },
+    { name: 'Доверит. зазор', value: conf, pct: (conf / bound * 100) }
+  ];
+  contributors.sort((a, b) => b.value - a.value);
+  const main = contributors[0];
+  document.getElementById('mainContributor').textContent = main.value.toFixed(4);
+  document.getElementById('mainContributorSub').innerHTML =
+    `${main.name} — ${main.pct.toFixed(0)}% границы.<br>` +
+    (main.value === twoRad
+      ? 'Доминирует сложность модели → усиливай регуляризацию ($B \\downarrow$) или нормируй признаки ($R \\downarrow$).'
+      : main.value === Rm
+        ? 'Доминирует обучающая ошибка → модель недообучена, увеличь гибкость класса.'
+        : 'Доминирует статистический зазор → мало данных, набирай больше $m$.');
+
+  // 3) VC comparison
+  // Estimate d from R (assuming standardized features: R ≈ sqrt(d))
+  const d = Math.max(1, Math.round(R * R));
+  const h = d + 1;
+  const vcBound = Rm + Math.sqrt(
+    (h * Math.log(2 * Math.E * m / h) + Math.log(4 / delta)) / (2 * m)
+  );
+  const ratio = vcBound / bound;
+  document.getElementById('vcCompare').textContent = vcBound.toFixed(3);
+  document.getElementById('vcCompareSub').innerHTML =
+    `VC-граница (для $h = d+1 = ${h}$, где $d \\approx R^2 = ${d}$).<br>` +
+    `Рэдемахер в <strong>${ratio.toFixed(2)}× раз точнее</strong> ` +
+    (ratio > 1.5 ? '— существенный выигрыш.' : ratio > 1.1 ? '— небольшой выигрыш.' : '— выигрыш минимальный.');
+
+  // 4) Gap
+  document.getElementById('gapValue').textContent = gap.toFixed(4);
+  document.getElementById('gapValueSub').innerHTML =
+    `Зазор = граница − $\\hat{R}_m = ${gap.toFixed(3)}$.<br>` +
+    `Обучающая ошибка занижает истинную на <strong>${(gap * 100).toFixed(0)} п.п.</strong> ` +
+    (gap > 0.20 ? '— большое расхождение, опасно доверять $\\hat{R}_m$.' :
+     gap > 0.10 ? '— заметное расхождение.' : '— небольшое расхождение, $\\hat{R}_m$ достаточно надёжна.');
+
+  // 5) Trust level
+  const trust = (1 - delta) * 100;
+  document.getElementById('trustLevel').textContent = trust.toFixed(0) + '%';
+  document.getElementById('trustLevelSub').innerHTML =
+    `Оценка верна с вероятностью $\geq ${trust.toFixed(0)}\\%$ (параметр $\\delta = ${delta}$).<br>` +
+    (delta >= 0.10 ? 'Низкое доверие — для продакшна возьми $\\delta = 0{,}05$ или $0{,}01$.' :
+     delta <= 0.01 ? 'Очень высокое доверие, но граница шире.' : 'Стандартный уровень доверия.');
+
+  // 6) Recommendations (what-if analysis)
+  const recs = [];
+  const pct = (n) => ((n > 0 ? '−' : '') + Math.abs(n * 100).toFixed(0) + '%');
+
+  // What-if: double m
+  const m2 = m * 2;
+  const rad2 = B * R / Math.sqrt(m2);
+  const bound2 = Rm + 2 * rad2 + Math.sqrt(Math.log(1/delta)/(2*m2));
+  const delta2 = (bound - bound2) / bound;
+  recs.push(`Удвоить $m$ до ${m2.toLocaleString('ru-RU')}: граница $\Rightarrow ${bound2.toFixed(3)}$ ` +
+            `<span class="delta">(${pct(delta2)} лучше)</span>. По закону $1/\\sqrt{m}$ зазор уменьшится в $\\sqrt{2} \\approx 1{,}41$.`);
+
+  // What-if: 10× m
+  const m10 = m * 10;
+  const rad10 = B * R / Math.sqrt(m10);
+  const bound10 = Rm + 2 * rad10 + Math.sqrt(Math.log(1/delta)/(2*m10));
+  const delta10 = (bound - bound10) / bound;
+  recs.push(`Увеличить $m$ в 10 раз до ${m10.toLocaleString('ru-RU')}: граница $\Rightarrow ${bound10.toFixed(3)}$ ` +
+            `<span class="delta">(${pct(delta10)} лучше)</span>. Сложность уменьшится в $\\sqrt{10} \\approx 3{,}16$.`);
+
+  // What-if: halve B
+  if (B > 0.1) {
+    const newB = B / 2;
+    const newRad = newB * R / Math.sqrt(m);
+    const boundB = Rm + 2 * newRad + conf;
+    const deltaB = (bound - boundB) / bound;
+    recs.push(`Уменьшить $B$ в 2 раза до ${newB} (усилить L2-регуляризацию): граница $\Rightarrow ${boundB.toFixed(3)}$ ` +
+              `<span class="delta">(${pct(deltaB)} лучше)</span>. Сложность упадёт пропорционально.`);
+  }
+
+  // What-if: normalize features (if R is large)
+  if (R > 2) {
+    const newR = Math.max(1, Math.sqrt(Math.round(R * R)));  // try R = sqrt(d) with d = round(R^2)
+    const altR = 1.5;  // typical after good standardization
+    const newRad = B * altR / Math.sqrt(m);
+    const boundR = Rm + 2 * newRad + conf;
+    const deltaR = (bound - boundR) / bound;
+    if (deltaR > 0) {
+      recs.push(`Улучшить нормировку признаков ($R \\to ${altR}$): граница $\Rightarrow ${boundR.toFixed(3)}$ ` +
+                `<span class="delta">(${pct(deltaR)} лучше)</span>. Z-score нормировка обязательна для линейных моделей.`);
+    }
+  }
+
+  // What-if: delta change
+  if (delta !== 0.05) {
+    const newDelta = 0.05;
+    const newConf = Math.sqrt(Math.log(1/newDelta)/(2*m));
+    const boundD = Rm + twoRad + newConf;
+    const deltaD = (bound - boundD) / bound;
+    const sign = deltaD >= 0 ? 'лучше' : 'хуже';
+    const cls = deltaD >= 0 ? 'delta' : 'worse';
+    recs.push(`Перейти к $\\delta = 0{,}05$ (доверие 95%): граница $\Rightarrow ${boundD.toFixed(3)}$ ` +
+              `<span class="${cls}">(${pct(deltaD)} ${sign})</span>.`);
+  }
+
+  // Sample size to reach epsilon = 0.10
+  const eps10 = 0.10;
+  let mApprox = Math.pow((2 * B * R + Math.sqrt(Math.log(1/delta)/2)) / eps10, 2);
+  recs.push(`Для гарантии $\\varepsilon = 0{,}10$ потребуется $m \\geq ${Math.round(mApprox).toLocaleString('ru-RU')}$ ` +
+            `(с учётом доверит. зазора).`);
+
+  // Quality verdict
+  if (bound > 0.5) {
+    recs.push(`<span class="worse">Внимание:</span> граница > 50% — оценка ошибки бесполезна. ` +
+              `Приоритет: нормировка признаков и регуляризация.`);
+  } else if (bound > 0.3) {
+    recs.push(`<span class="worse">Внимание:</span> граница > 30% — высокая неопределённость. ` +
+              `Рекомендуется кросс-валидация для уточнения.`);
+  } else if (bound < 0.15) {
+    recs.push(`Граница < 15% — отличная гарантия. Можно доверять модели в продакшне.`);
+  }
+
+  const recList = document.getElementById('recList');
+  recList.innerHTML = recs.map(r => `<li>${r}</li>`).join('');
+
+  if (window.MathJax && MathJax.typesetPromise) {
+    MathJax.typesetPromise([document.getElementById('analysisSection')]);
+  }
+}
+
+// Presets
+const presets = {
+  ex1:   { B: 1,   R: 3,        m: 1000,  Rm: 0.05, delta: 0.05 },
+  ex5:   { B: 1,   R: 1,        m: 500,   Rm: 0.05, delta: 0.05 },
+  ex6:   { B: 1,   R: 4.47,     m: 500,   Rm: 0.40, delta: 0.05 },
+  ex7:   { B: 1,   R: 7.07,     m: 1000,  Rm: 0.05, delta: 0.05 }, // d=50, R=sqrt(50)
+  ex9a:  { B: 0.1, R: 1,        m: 100,   Rm: 0.10, delta: 0.05 },
+  ex9b:  { B: 1,   R: 1,        m: 10000, Rm: 0.10, delta: 0.05 },
+  reset: { B: 1,   R: 3,        m: 1000,  Rm: 0.05, delta: 0.05 },
+};
+
+document.querySelectorAll('.presets button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const p = presets[btn.dataset.preset];
+    Object.assign(state, p);
+    inputs.forEach(name => {
+      document.getElementById(name + '_slider').value = state[name];
+      document.getElementById(name + '_num').value = state[name];
+    });
+    updateCalc();
+  });
+});
+
+updateCalc();
+
+// ============ CHART ============
+const canvas = document.getElementById('chartCanvas');
+const ctx = canvas.getContext('2d');
+
+function drawChart() {
+  // Resize canvas to display size
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * window.devicePixelRatio;
+  canvas.height = rect.height * window.devicePixelRatio;
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+  const W = rect.width, H = rect.height;
+  const padL = 60, padR = 30, padT = 30, padB = 50;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, W, H);
+
+  const m = parseInt(document.getElementById('chart_m').value);
+  document.getElementById('m_display').textContent = m;
+
+  const showTrain = document.getElementById('ch_train').checked;
+  const showTrue = document.getElementById('ch_true').checked;
+  const showBound = document.getElementById('ch_bound').checked;
+  const showGap = document.getElementById('ch_gap').checked;
+
+  // X: complexity 1..15
+  const xMin = 1, xMax = 15;
+  const yMin = 0, yMax = 0.55;
+  const xToPx = x => padL + (x - xMin) / (xMax - xMin) * plotW;
+  const yToPx = y => padT + plotH - (y - yMin) / (yMax - yMin) * plotH;
+
+  // Grid
+  ctx.strokeStyle = '#eee';
+  ctx.lineWidth = 1;
+  for (let y = 0; y <= 0.5; y += 0.1) {
+    ctx.beginPath();
+    ctx.moveTo(padL, yToPx(y));
+    ctx.lineTo(W - padR, yToPx(y));
+    ctx.stroke();
+  }
+  for (let x = 1; x <= 15; x += 2) {
+    ctx.beginPath();
+    ctx.moveTo(xToPx(x), padT);
+    ctx.lineTo(xToPx(x), H - padB);
+    ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(padL, padT);
+  ctx.lineTo(padL, H - padB);
+  ctx.lineTo(W - padR, H - padB);
+  ctx.stroke();
+
+  // Axis labels
+  ctx.fillStyle = '#000';
+  ctx.font = '13px serif';
+  ctx.textAlign = 'center';
+  for (let x = 1; x <= 15; x += 2) {
+    ctx.fillText(x, xToPx(x), H - padB + 18);
+  }
+  ctx.textAlign = 'right';
+  for (let y = 0; y <= 0.5; y += 0.1) {
+    ctx.fillText(y.toFixed(1), padL - 8, yToPx(y) + 4);
+  }
+  // Axis titles
+  ctx.font = '14px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('Сложность модели (h или степень полинома)', (padL + W - padR) / 2, H - 10);
+  ctx.save();
+  ctx.translate(15, (padT + H - padB) / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText('Ошибка', 0, 0);
+  ctx.restore();
+
+  // Functions
+  const N = 200;
+  const xs = Array.from({length: N}, (_, i) => xMin + (xMax - xMin) * i / (N - 1));
+  const trainErr = xs.map(c => 0.45 * Math.exp(-0.32 * c) + 0.03);
+  const trueErr = xs.map((c, i) => Math.min(0.55, trainErr[i] + 0.025 * Math.pow(c - 5.5, 2) / 8));
+  // gap depends on m: gap = 2 * sqrt(c) / sqrt(m) + sqrt(ln(20)/m)
+  const gap = xs.map(c => 0.0894 * Math.sqrt(c) + Math.sqrt(Math.log(20) / m));
+  const bound = xs.map((c, i) => trainErr[i] + gap[i]);
+
+  // Gap fill
+  if (showGap) {
+    ctx.fillStyle = 'rgba(180, 180, 180, 0.5)';
+    ctx.beginPath();
+    ctx.moveTo(xToPx(xs[0]), yToPx(trainErr[0]));
+    xs.forEach((c, i) => ctx.lineTo(xToPx(c), yToPx(trainErr[i])));
+    for (let i = N - 1; i >= 0; i--) ctx.lineTo(xToPx(xs[i]), yToPx(bound[i]));
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // Curves
+  function plot(arr, color, style, width) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width || 2.2;
+    ctx.setLineDash(style === 'dashed' ? [6, 4] : style === 'dashdot' ? [8, 3, 2, 3] : []);
+    ctx.beginPath();
+    arr.forEach((y, i) => {
+      const px = xToPx(xs[i]), py = yToPx(y);
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    });
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  if (showBound) plot(bound, '#000', 'dashdot', 2.2);
+  if (showTrue) plot(trueErr, '#000', 'dashed', 2.2);
+  if (showTrain) plot(trainErr, '#000', 'solid', 2.4);
+
+  // Optimum marker
+  let minIdx = 0;
+  for (let i = 0; i < N; i++) if (trueErr[i] < trueErr[minIdx]) minIdx = i;
+  ctx.strokeStyle = '#666';
+  ctx.lineWidth = 1.2;
+  ctx.setLineDash([3, 3]);
+  ctx.beginPath();
+  ctx.moveTo(xToPx(xs[minIdx]), padT);
+  ctx.lineTo(xToPx(xs[minIdx]), H - padB);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#333';
+  ctx.font = '12px serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('оптимум', xToPx(xs[minIdx]) + 4, padT + 14);
+
+  // Legend
+  ctx.font = '13px serif';
+  ctx.textAlign = 'left';
+  let ly = padT + 14, lx = W - padR - 220;
+  const drawLeg = (label, style) => {
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 2;
+    ctx.setLineDash(style === 'dashed' ? [6, 4] : style === 'dashdot' ? [8, 3, 2, 3] : []);
+    ctx.beginPath();
+    ctx.moveTo(lx, ly - 4);
+    ctx.lineTo(lx + 24, ly - 4);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillText(label, lx + 30, ly);
+    ly += 18;
+  };
+  if (showTrain) drawLeg('R̂m — обучение', 'solid');
+  if (showTrue) drawLeg('R — истинная', 'dashed');
+  if (showBound) drawLeg('верхняя граница', 'dashdot');
+}
+
+// Chart controls
+['ch_train', 'ch_true', 'ch_bound', 'ch_gap', 'chart_m'].forEach(id => {
+  document.getElementById(id).addEventListener('input', drawChart);
+});
+
+// Redraw on resize
+window.addEventListener('resize', () => {
+  if (document.getElementById('chart').classList.contains('active')) drawChart();
+});
+
+// ============ EXAMPLES ============
+const examples = [
+  {
+    title: 'Пример 1. Базовый кредитный скоринг',
+    scenario: 'Банк обучает линейную модель выдавать/отказывать в кредите. L2-регуляризация: $\\|w\\| \\leq 1$ ($B = 1$). Признаки нормированы: $\\|x_i\\| \\leq 3$ ($R = 3$). $m = 1000$ заявок. $\\hat{R}_m = 0{,}05$.',
+    question: 'С какой гарантией и насколько можно утверждать, что истинная ошибка не превысит порог? $\\delta = 0{,}05$.',
+    calc: '$\\hat{\\mathfrak{R}} \\leq \\frac{1 \\cdot 3}{\\sqrt{1000}} \\approx 0{,}095$<br>$R \\leq 0{,}05 + 2 \\cdot 0{,}095 + \\sqrt{\\frac{\\ln 20}{2000}} \\approx 0{,}05 + 0{,}19 + 0{,}039 \\approx 0{,}279$',
+    answer: 'С вероятностью 95% истинная ошибка не превысит ≈ 28%, хотя на обучении 5%.',
+    preset: 'ex1'
+  },
+  {
+    title: 'Пример 2. Эффект размера выборки',
+    scenario: 'Маленький банк $m = 100$, крупный $m = 10000$. У обоих $B = 1$, $R = 1$.',
+    question: 'Во сколько раз уменьшится сложность Рэдемахера при росте выборки в 100 раз?',
+    calc: 'Малый: $\\hat{\\mathfrak{R}} = 1/\\sqrt{100} = 0{,}1$<br>Крупный: $\\hat{\\mathfrak{R}} = 1/\\sqrt{10000} = 0{,}01$',
+    answer: 'В 10 раз. Закон $1/\\sqrt{m}$: рост $m$ в $k$ раз уменьшает $\\hat{\\mathfrak{R}}$ в $\\sqrt{k}$ раз.',
+    preset: 'reset'
+  },
+  {
+    title: 'Пример 3. Эффект регуляризации',
+    scenario: '$B$ уменьшилось с 2 до 0,5. $R = 1$, $m = 500$.',
+    question: 'Как изменится сложность при усилении регуляризации в 4 раза?',
+    calc: 'До: $\\hat{\\mathfrak{R}} = 2/\\sqrt{500} \\approx 0{,}089$<br>После: $\\hat{\\mathfrak{R}} = 0{,}5/\\sqrt{500} \\approx 0{,}022$',
+    answer: 'Уменьшилась в 4 раза (пропорционально $B$).',
+    preset: 'reset'
+  },
+  {
+    title: 'Пример 4. Эффект нормализации',
+    scenario: 'Без нормировки $R \\approx 220$ (доход до 200 тыс.). После z-score $R = 3$. $B = 1$, $m = 1000$.',
+    question: 'Какой эффект даст стандартизация признаков?',
+    calc: 'Без нормировки: $\\hat{\\mathfrak{R}} = 220/\\sqrt{1000} \\approx 6{,}96$ (бессмысленна, > 1)<br>После: $\\hat{\\mathfrak{R}} = 3/\\sqrt{1000} \\approx 0{,}095$',
+    answer: 'Сложность уменьшилась в ~73 раза. Нормировка обязательна.',
+    preset: 'ex1'
+  },
+  {
+    title: 'Пример 5. VC vs Рэдемахер',
+    scenario: 'Линейный классификатор в $\\mathbb{R}^{10}$ ($h = 11$), $m = 500$, $\\hat{R}_m = 0{,}05$, $\\delta = 0{,}05$, $B = R = 1$.',
+    question: 'Какая граница точнее?',
+    calc: 'VC: $R \\leq 0{,}306$<br>Рэдемахер: $R \\leq 0{,}05 + 2/\\sqrt{500} + \\sqrt{\\ln 20/1000} \\approx 0{,}194$',
+    answer: 'Рэдемахер в 1,53 раза точнее. Он «видит» конкретные $B$ и $R$.',
+    preset: 'ex5'
+  },
+  {
+    title: 'Пример 6. Прогноз знака цены акций',
+    scenario: '20 признаков (доходности за 20 дней) в $[-1, 1]$, $\\|x_i\\| \\leq \\sqrt{20} \\approx 4{,}47$. $B = 1$, $m = 500$.',
+    question: 'Достаточно ли 500 дней для надёжного прогноза?',
+    calc: '$\\hat{\\mathfrak{R}} = \\sqrt{20}/\\sqrt{500} = 0{,}2$<br>$R \\leq \\hat{R}_m + 0{,}4 + 0{,}061 \\approx \\hat{R}_m + 0{,}461$',
+    answer: 'Даже при $\\hat{R}_m = 0{,}4$ истинная ошибка может быть до 0,86. Финансовые данные шумные — нужно больше данных.',
+    preset: 'ex6'
+  },
+  {
+    title: 'Пример 7. Проклятие размерности',
+    scenario: 'Признаков $d = 5$ vs $d = 50$. Каждый в $[-1, 1]$, $R = \\sqrt{d}$. $B = 1$, $m = 1000$.',
+    question: 'Во сколько раз вырастет сложность при росте признаков с 5 до 50?',
+    calc: '$d = 5$: $\\hat{\\mathfrak{R}} = \\sqrt{5}/\\sqrt{1000} \\approx 0{,}071$<br>$d = 50$: $\\hat{\\mathfrak{R}} = \\sqrt{50}/\\sqrt{1000} \\approx 0{,}224$',
+    answer: 'В $\\sqrt{10} \\approx 3{,}16$ раза. Чтобы компенсировать — нужно в 10 раз больше данных.',
+    preset: 'ex7'
+  },
+  {
+    title: 'Пример 8. Требуемое m для ипотеки',
+    scenario: 'Гарантия $\\varepsilon = 0{,}05$. $d = 20$, $R = \\sqrt{20}$, $B = 1$, $\\delta = 0{,}05$.',
+    question: 'Сколько исторических ипотечных заявок нужно собрать?',
+    calc: '$m \\geq \\left(\\frac{2BR}{\\varepsilon}\\right)^2 = \\left(\\frac{2\\sqrt{20}}{0{,}05}\\right)^2 = 32000$',
+    answer: '≈ 32000 заявок. VC для $h = 21$ дал бы ~50000 — Рэдемахер реалистичнее.',
+    preset: 'reset'
+  },
+  {
+    title: 'Пример 9. Trade-off: данные vs регуляризация',
+    scenario: 'Банк А (стартап): $m = 100$, $B = 0{,}1$, $R = 1$. Банк Б (крупный): $m = 10000$, $B = 1$, $R = 1$.',
+    question: 'У какого банка лучше гарантия обобщения?',
+    calc: 'Оба: $\\hat{\\mathfrak{R}} = 0{,}01$. Доверит. зазор: А — 0,122, Б — 0,012.<br>При $\\hat{R}_m = 0{,}10$: А — $R \\leq 0{,}242$, Б — $R \\leq 0{,}132$.',
+    answer: 'Сложность Рэдемахера одинаковая — стартап компенсировал регуляризацией. Но доверит. зазор у стартапа в 10× больше. Крупный банк выигрывает: 13% vs 24%.',
+    preset: 'ex9a'
+  },
+  {
+    title: 'Пример 10. Линейная vs нейросеть',
+    scenario: '$m = 1000$, $R = 1$. Линейная $B = 1$: $\\hat{\\mathfrak{R}} \\approx 0{,}032$. Нейросеть с $10^4$ весами: $\\hat{\\mathfrak{R}} \\approx 0{,}32$.',
+    question: 'Какая модель надёжнее на $m = 1000$?',
+    calc: 'Линейная: $2\\hat{\\mathfrak{R}} = 0{,}064$<br>Нейросеть: $2\\hat{\\mathfrak{R}} \\approx 0{,}64$',
+    answer: 'Нейросеть в 10 раз «гибче». На $m = 1000$ почти наверняка переобучится. Поэтому для табличных данных в скоринге линейные модели часто выигрывают.',
+    preset: 'reset'
+  }
+];
+
+const exNav = document.getElementById('exNav');
+const exCard = document.getElementById('exCard');
+
+examples.forEach((ex, i) => {
+  const btn = document.createElement('button');
+  btn.textContent = (i + 1);
+  if (i === 0) btn.classList.add('active');
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.example-nav button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    showExample(i);
+  });
+  exNav.appendChild(btn);
+});
+
+function showExample(i) {
+  const ex = examples[i];
+  exCard.innerHTML = `
+    <h3>${ex.title}</h3>
+    <div class="scenario"><strong>Сценарий.</strong> ${ex.scenario}</div>
+    <div class="question"><strong>Вопрос.</strong> ${ex.question}</div>
+    <div class="calc"><strong>Расчёт.</strong> ${ex.calc}</div>
+    <div class="answer"><strong>Ответ.</strong> ${ex.answer}</div>
+    <button class="load-btn" data-preset="${ex.preset}">→ Загрузить параметры в калькулятор</button>
+  `;
+  exCard.querySelector('.load-btn').addEventListener('click', () => {
+    const p = presets[ex.preset];
+    Object.assign(state, p);
+    inputs.forEach(name => {
+      document.getElementById(name + '_slider').value = state[name];
+      document.getElementById(name + '_num').value = state[name];
+    });
+    updateCalc();
+    document.querySelector('nav button[data-tab="calculator"]').click();
+  });
+  if (window.MathJax && MathJax.typesetPromise) {
+    MathJax.typesetPromise([exCard]);
+  }
+}
+
+showExample(0);
+
+</script>
+</body>
+</html>
