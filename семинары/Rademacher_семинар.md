@@ -88,7 +88,7 @@ $$
 ## 5. Граница обобщения
 
 **Теорема (Bartlett–Mendelson, 2002).** Пусть $\sup_{f \in F}\|f\|_\infty \leq M$. С вероятностью $\geq 1 - \delta$ по выборке $S \sim \mathcal{D}^m$:
-$$R(f) \;\leq\; \hat{R}_m(f) \;+\; 2\hat{\mathfrak{R}}_S(F) \;+\; 2M\sqrt{\frac{\ln(2/\delta)}{2m}}.$$
+$$R(f) \\leq\ \hat{R}_m(f) \+\ 2\hat{\mathfrak{R}}_S(F) \+\ 2M\sqrt{\frac{\ln(2/\delta)}{2m}}.$$
 
 | Слагаемое | Что значит |
 |---|---|
