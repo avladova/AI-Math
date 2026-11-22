@@ -116,7 +116,7 @@ $$R(f) \\leq\ \hat{R}_m(f) \+\ 2\hat{\mathfrak{R}}_S(F) \+\ 2M\sqrt{\frac{\ln(2/
 | Huber loss (параметр $\delta$) | кусочно-заданная, $\Vert y-\hat{y}\Vert \leq 2$ | $[0, 2\delta - \delta^2/2]$ | $2\delta - \delta^2/2$ |
 | Экспоненциальная loss | $e^{-y\hat{y}}$ при $\Vert y\hat{y}\Vert \leq B$ | $[e^{-B}, e^B]$ | $e^B$ |
 | Регрессия с $\ell \in [0, L]$ | произвольная ограниченная | $[0, L]$ | **$L$** |
-| Асимметричная (штраф $c_1$ за FN, $c_2$ за FP) | $\begin{cases}c_1, & \text{FN} \\ c_2, & \text{FP} \\ 0, & \text{верно}\end{cases}$ | $\{0, c_1, c_2\}$ | $\max(c_1, c_2)$ |
+| Асимметричная (штраф $c_1$ за FN, $c_2$ за FP) | $\begin{cases}c\_1, & \text{FN} \\ c\_2, & \text{FP} \\ 0, & \text{верно}\end{cases}$ | $\{0, c_1, c_2\}$ | $\max(c_1, c_2)$ |
 | Асимметричная (штраф $c\_1$ за FN, $c\_2$ за FP) | $\begin{cases}c\_1, & \text{FN} \\ c\_2, & \text{FP} \\ 0, & \text{верно}\end{cases}$ | $\{0, c\_1, c\_2\}$ | $\max(c\_1, c\_2)$ |
 
 ### Сравнение с VC-границей
