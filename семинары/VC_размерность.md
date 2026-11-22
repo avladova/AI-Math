@@ -346,8 +346,66 @@ $$R(f) \leq \hat{R}_m(f) + \sqrt{\frac{h \ln(2em/h) + \ln(4/\delta)}{2m}} \quad\
 - $R$ — истинная ошибка на новых данных.
 
 ---
+Раздел 8. Оценка VC-размерности в R: пакет `scR` (Empirical Sample Complexity Bounds) 
 
-## 8. Словарь терминов
+Инструменты для оценки эмпирических границ сложности выборки, включая оценку VC-размерности симуляцией.
+CRAN: https://cran.r-project.org/package=scR
+```r
+install.packages("scR")
+library(scR)
+```
+Функция `simvcd()` — оценивает VC-размерность произвольного бинарного классификатора методом симуляции. В отличие от формулы $h = d + 1$ (только для линейных), работает для логистической регрессии, деревьев, SVM и других моделей.
+```r
+simvcd(
+  model,            # функция модели: function(formula, data)
+  dim,              # число признаков
+  packages = list(),
+  m = 1000,         # число симуляций в каждой точке
+  k = 1000,         # число точек для оценки bounding function
+  maxn = 5000,      # максимальное число наблюдений
+  parallel = TRUE,
+  coreoffset = 0,   # сколько ядер оставить свободными
+  predictfn = NULL, # пользовательская функция предсказания
+  a = 0.16, a1 = 1.2, a11 = 0.14927,  # коэффициенты bounding function
+  minn = (dim + 1),
+  ...
+)
+```
+Возвращает: действительное число — оценку VC-размерности.
+Пример: логистическая регрессия в $\mathbb{R}^7$
+```r
+library(scR)
+library(parallel)
+
+# Определяем модель — логистическая регрессия
+mylogit <- function(formula, data) {
+  m <- structure(
+    glm(formula = formula, data = data, family = binomial(link = "logit")),
+    class = c("svrclass", "glm")  # ВАЖНО: класс "svrclass" обязателен
+  )
+  return(m)
+}
+
+# Функция предсказания
+mypred <- function(m, newdata) {
+  out <- predict.glm(m, newdata, type = "response")
+  out <- factor(ifelse(out > 0.5, 1, 0), levels = c("0", "1"))
+  return(out)
+}
+# Оценка VC-размерности
+vcd <- simvcd(
+  model = mylogit,
+  dim = 7,
+  m = 10, k = 10, maxn = 50,
+  predictfn = mypred,
+  coreoffset = detectCores() - 2
+)
+print(vcd)  # действительное число — оценка VC-размерности
+```
+Для логистической регрессии в $\mathbb{R}^7$ теоретическая VC-размерность = $d + 1 = 8$. `simvcd()` должна дать значение, близкое к 8.
+
+---
+## 9. Словарь терминов
 
 | Термин | Краткое определение | Роль в семинаре |
 |---|---|---|
