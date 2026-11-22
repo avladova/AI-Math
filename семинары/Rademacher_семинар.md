@@ -361,7 +361,7 @@ $$\frac{2BR}{\sqrt{m}} \leq \varepsilon \;\Rightarrow\; m \geq \left(\frac{2BR}{
 
 **Сценарий.** Для задачи кредитного скоринга ($m = 1000$, $R = 1$) рассматривают две модели:
 - **Линейная** с $B = 1$: $\hat{\mathfrak{R}}_{\text{лин}} = 1/\sqrt{1000} \approx 0{,}032$.
-- **Нейросеть** с $W \sim 10^4$ параметрами: для полносвязной сети $\hat{\mathfrak{R}}_{\text{NN}} \sim O(\sqrt{W/m})$, грубо $\hat{\mathfrak{R}}_{\text{NN}} \approx 0{,}32$.
+- **Нейросеть** с $W \sim 10^4$ параметрами: для полносвязной сети $\hat{\mathfrak{R}}\_{\text{NN}} \sim O(\sqrt{W/m})$, грубо $\hat{\mathfrak{R}}\_{\text{NN}} \approx 0{,}32$.
 
 **Вопрос.** Какая модель надёжнее на $m = 1000$?
 
