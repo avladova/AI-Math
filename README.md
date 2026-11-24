@@ -8,9 +8,12 @@
 
 - [Каталог семинаров](семинары/README.md) — темы, тексты и интерактивные дополнения.
 - [Интерактивные материалы](docs/) — страницы для работы в браузере через GitHub Pages.
-- [Радиус Рэдемахера](семинары/Rademacher_семинар.md) · [интерактивная страница](docs/seminars/rademacher/).
-- [Задания к семинару по радиусу Рэдемахера](задания/seminar1_radius_rademahera.pdf).
-- [VC-размерность](семинары/VC_размерность.md) · [интерактивная страница](https://avladova.github.io/AI-Math/seminars/vc-dimension/).
+- [Радиус Рэдемахера](семинары/Rademacher_семинар.md)
+  - [Интерактивная страница](docs/seminars/rademacher/)
+  - [Задания к семинару по радиусу Рэдемахера](задания/seminar1_radius_rademahera.pdf)
+- [VC-размерность](семинары/VC_размерность.md)
+  - [Интерактивная страница](https://avladova.github.io/AI-Math/seminars/vc-dimension/)
+  - [Задания по VC-размерности](задания/VC_seminar2_tasks.pdf)
 - [Кривые обучения](семинары/кривые_обучения.md).
 - [Остатки во временных рядах](семинары/остатки_временные_ряды.md).
 - [Смещение–дисперсия](семинары/смещение_дисперсия.md).
@@ -21,17 +24,24 @@
 ```text
 AI-Math/
 ├── README.md
+├── задания/
+│   ├── README.md
+│   ├── seminar1_radius_rademahera.pdf
+│   └── VC_seminar2_tasks.pdf
+├── assets/                    общие схемы и иллюстрации
 ├── семинары/
 │   ├── README.md
 │   ├── *.md
-│   └── assets/                 рисунки и схемы к текстам
+│   ├── assets/                рисунки и схемы к текстам
+│   └── _auxiliary/            служебные ключи ответов
 ├── docs/
 │   ├── index.html              главная страница GitHub Pages
 │   └── seminars/
 │       ├── rademacher/
 │       │   └── index.html
+│       ├── vc-dimension/
+│       │   └── index.html
 │       └── bias-variance/
 │           └── index.html
 └── код/                        вычислительные примеры
 ```
-
